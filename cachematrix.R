@@ -1,29 +1,34 @@
 ## the functions below 
 ## functions do
 
-## Write a short comment describing this function
-
-makeCacheMatrix <- function(x)
+## this functions contains 4 functions which get and set the matrix and its inverse in the cache
+## The function "makeCacheMatrix" (and its functions) is called by the cacheSolve in order to retrieve the cached
+makeCacheMatrix <- function(x = matrix)
 {
-    #set the default values for the matrix and it's inverse
-    CacheinverseMatrix <<- NULL
-    Cachematrix <<- NULL
-    
-    #this function sets the new value of the matrix
-    #it is used to compare a matrix in cacheSolve to the existing value.
-    #if the value in cacheSolve is identical to the cached one
+
     setMatrix <- function(x) Cachematrix <<- x
     
-    getMatrix <- function() Cachematrix
-   
+    getMatrix <- function()
+    {
+        if (exists("Cachematrix"))
+        {
+            return (Cachematrix)
+        }
+        else 
+        {
+            return(NULL) 
+        }
+    }  
     
-    setInverse <- function(inverse) CacheinverseMatrix <<- inverse
-    getInverse <- function() CacheinverseMatrix
+    setInverse <- function(inverse)  CacheinverseMatrix <<- inverse
+                                     
+    
+    getInverse <- function()  CacheinverseMatrix
+
     list(setMatrix = setMatrix, getMatrix = getMatrix,
          setInverse = setInverse,
          getInverse = getInverse)
 }
-
 
 
 ## This function is called to find the inverse of a matrix.
@@ -33,22 +38,19 @@ makeCacheMatrix <- function(x)
 
 ## storing in the cache is done by the funtion "makeCacheMatrix" above.
 
-cacheSolve <- function(x = matrix)
-{   
-    ## if the function is called by default the inverse is set to NULL and the variable matrix is set to the parameter x
-        
+cacheSolve <- function(x,...)
+{
+    
     matrix <- x
     inverse <- NULL
     
-    ## in order to call the functions to get/set the matrix and it's inverse, the main funtion is stored in a variable
     mtrxfn <- makeCacheMatrix()
     
-    ## get the chached matrix
     GetMatrix <- mtrxfn$getMatrix()
     
     if(identical(GetMatrix, x))
     {
-        return (mtrxfn$getInverse(matrix))
+        return (mtrxfn$getInverse())
     }
     else
     {
@@ -57,7 +59,7 @@ cacheSolve <- function(x = matrix)
         mtrxfn$setInverse(inverse)
         return(inverse)
     }
-  
+    
     
 }
 
