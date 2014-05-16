@@ -35,29 +35,37 @@ makeCacheMatrix <- function(x = matrix)
 }
 
 
-## This function is called to find the inverse of a matrix.
-## if the inverse has already been computed (the parameter 'matrix' is identical to the cached matrix)
-## The inverse matrix could also be found in the cache
-## if both matrices are different, the inverse is computed and stored in the cache
-
-## storing in the cache is done by the funtion "makeCacheMatrix" above.
-
+## this function is used to compute the inverse of a matrix.
+## if the inverse of a matrix already exists in the cache, the cached inverse is used
+## in the other scenario in which no inverse is cached or the inverse of a different matrix is cached, the 
+## inverse is computed with the solve() fucntion
 cacheSolve <- function(x,...)
 {
+    
+    ##the default valie of the variable matrix is set, as is the inverse
     
     matrix <- x
     inverse <- NULL
     
+    ##mtrxfn is a variable that contains the functions in "makeCacheMatrix"
     mtrxfn <- makeCacheMatrix()
     
+    ##the cached matrix is retrieved; if no cached matrix exists, NULL is returned
     GetMatrix <- mtrxfn$getMatrix()
     
+    ##this statement checks if the retrieved matrix from the cache(see "GetMatrix <- mtrxfn$getMatrix()")
+    ## is idetentical to the matrix from which the inverse should be computed
     if(identical(GetMatrix, x))
     {
+        ## if both the parameter matrix and the cached matrix are identical, the inverse matrix from the cache
+        ## is called
         return (mtrxfn$getInverse())
     }
     else
     {
+        ## if both are not identical, the inverse matrix is computed with the solve() funtion.
+        ## both the matrix and its inverse are set to the cache. 
+        
         inverse <- solve(matrix)
         mtrxfn$setMatrix(matrix)
         mtrxfn$setInverse(inverse)
