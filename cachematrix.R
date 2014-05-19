@@ -58,7 +58,7 @@ cacheSolve <- function(x,...)
     if(identical(GetMatrix, x))
     {
         ## if both the parameter matrix and the cached matrix are identical, the inverse matrix from the cache
-        ## is called
+        ## is returned
         return (mtrxfn$getInverse())
     }
     else
